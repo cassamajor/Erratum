@@ -1,0 +1,25 @@
+# Reference: https://docs.saltstack.com/en/latest/ref/configuration/master.html
+
+file_roots:
+  base:
+    - /srv/states
+
+pillar_roots:
+  base:
+    - /srv/pillar
+
+max_open_files: 500000
+max_event_size: 10485760
+file_buffer_size: 10485760
+
+enable_gpu_grains: False
+
+ping_on_rotate: True
+auto_accept: True
+hash_type: sha512
+
+log_level: info
+
+mine.get:
+  .*:
+    - .*

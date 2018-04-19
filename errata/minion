@@ -1,0 +1,12 @@
+# Reference: https://docs.saltstack.com/en/latest/ref/configuration/minion.html
+
+master: 127.0.0.1
+
+default_include: minion.d/*.conf
+hash_type: sha512
+
+tcp_keepalive: True
+enable_gpu_grains: False
+
+log_file: file:///dev/log
+log_level: info
