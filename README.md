@@ -12,8 +12,8 @@ Salt | https://saltstack.com/ | https://github.com/saltstack/salt | Configuratio
 ### [anaconda-ks.cfg](anaconda-ks.cfg)
 This is an example kickstart configuration file. The `root` and `linuxuser` accounts
 will be created with the password `password`. This can be changed in their appropriate fields.
-If you generate your own kickstart file, be sure to copy [lines 49-72](anaconda-ks.cfg#L49-L71) 
-to ensure the erratum repository files are placed in their appropriate directories.
+If you generate your own kickstart file, be sure to copy [lines 49-72](anaconda-ks.cfg#L49-L72) 
+to ensure the Erratum repository files are placed in their appropriate directories.
 
 
 ### [errata/files/authorized_keys](errata/files/authorized_keys)
