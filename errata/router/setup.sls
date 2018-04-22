@@ -18,6 +18,7 @@ base_packages:
       - vim-enhanced
       - git
       - bash-completion
+      - wget
       - bind-utils
       - mtr
     - require:
