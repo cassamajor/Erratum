@@ -10,6 +10,6 @@ setenforce 0:
 
 install_pihole:
   cmd.script:
-    - source: "https://raw.githubusercontent.com/Fauxsys/pi-hole/development/automated%20install/basic-install.sh"
+    - source: "https://raw.githubusercontent.com/Fauxsys/pi-hole/Erratum/automated%20install/basic-install.sh"
     - runas: root
     - args: "--unattended"
