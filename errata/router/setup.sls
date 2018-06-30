@@ -21,6 +21,8 @@ base_packages:
       - wget
       - bind-utils
       - mtr
+      - iptraf-ng
+      - screen
     - require:
       - pkg: epel-release
 
