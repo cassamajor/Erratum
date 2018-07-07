@@ -1,8 +1,9 @@
-{% set user = 'linuxuser' %}
+{% set accounts = ['user1', 'user2'] %}
 {% set is_router_internal = 'no' %}
 {% set wan_interface = 'ens33' %}
 {% set lan_interface = 'ens34' %}
 
+{% for user in accounts %}
 {{ user }}:
   user.present: []
   ssh_auth.present:
@@ -13,6 +14,7 @@
 /etc/sudoers:
   file.append:
     - text: "{{ user }} ALL=(ALL) NOPASSWD: ALL"
+{% endfor %}
 
 epel-release:
   pkg.installed: []
