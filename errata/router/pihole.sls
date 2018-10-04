@@ -5,11 +5,12 @@ setenforce 0:
   file:
     - managed
     - source: salt://files/setupVars.conf
+    - template: jinja
     - backup: minion
     - makedirs: True
 
 install_pihole:
   cmd.script:
-    - source: "https://raw.githubusercontent.com/Fauxsys/pi-hole/Erratum/automated%20install/basic-install.sh"
+    - source: "https://raw.githubusercontent.com/pi-hole/pi-hole/master/automated%20install/basic-install.sh"
     - runas: root
     - args: "--unattended"
