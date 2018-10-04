@@ -27,6 +27,7 @@ install_firehol:
   file.managed:
     - name: /etc/firehol/firehol.conf
     - source: salt://files/firehol.conf
+    - template: jinja
     - backup: minion
 
 firehol start:

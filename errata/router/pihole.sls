@@ -5,6 +5,7 @@ setenforce 0:
   file:
     - managed
     - source: salt://files/setupVars.conf
+    - template: jinja
     - backup: minion
     - makedirs: True
 

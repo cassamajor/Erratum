@@ -1,13 +1,13 @@
-linuxuser:
+{{ pillar['login_account'] }}:
   user.present: []
   ssh_auth.present:
-    - user: linuxuser
+    - user: {{ pillar['login_account'] }}
     - source: salt://files/authorized_keys
     - config: '%h/.ssh/authorized_keys'
 
 /etc/sudoers:
   file.append:
-    - text: "linuxuser ALL=(ALL) NOPASSWD: ALL"
+    - text: "{{ pillar['login_account'] }} ALL=(ALL) NOPASSWD: ALL"
 
 epel-release:
   pkg.installed: []
@@ -41,14 +41,18 @@ yum-cron:
     - repl: apply_updates = yes
     - pattern: apply_updates = no
 
+Define FQDN for router:
+  cmd.run:
+    - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{pillar['domain']}}
 
-# The below commands are to remove DNS settings on the WAN interface implemented by a DHCP server.
-# If DNS settings on the WAN interface should be managed by a DHCP server, remove these commands.
-# Possible use case is to remove an ISP's DNS servers pushed through DHCP.
+
+# This setting will remove an ISP's DNS servers pushed through DHCP
+{% if pillar['internal_router'] == False %}
 modify_wan_dns:
   cmd.run:
-    - name: nmcli con mod ens33 ipv4.ignore-auto-dns yes ipv4.dns "8.8.8.8 8.8.4.4"
+    - name: nmcli con mod {{ pillar['wan_interface'] }} ipv4.ignore-auto-dns yes ipv4.dns "{{ pillar['pihole_dns_1'] }} {{ pillar['pihole_dns_2'] }}"
 
 apply_wan_dns:
   cmd.run:
-    - name: nmcli device reapply ens33
+    - name: nmcli device reapply {{ pillar['wan_interface'] }}
+{% endif %}
