@@ -30,6 +30,16 @@ install_firehol:
     - template: jinja
     - backup: minion
 
+/etc/rsyslog.d/log_firehol.conf:
+  file.managed:
+    - source: salt://files/log_firehol.conf
+    - backup: minion
+
+/etc/logrotate.d/logrotate_firehol.conf:
+  file.managed:
+    - source: salt://files/logrotate_firehol.conf
+    - backup: minion
+
 firehol start:
   cmd.run: []
 
