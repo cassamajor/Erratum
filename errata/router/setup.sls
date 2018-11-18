@@ -43,8 +43,7 @@ yum-cron:
 
 Define FQDN for router:
   cmd.run:
-    - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{pillar['domain']}}
-
+    - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{ pillar['domain'] }}
 
 # This setting will remove an ISP's DNS servers pushed through DHCP
 {% if pillar['internal_router'] == False %}
