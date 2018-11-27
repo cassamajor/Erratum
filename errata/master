@@ -19,7 +19,3 @@ auto_accept: True
 hash_type: sha512
 
 log_level: info
-
-mine.get:
-  .*:
-    - .*
