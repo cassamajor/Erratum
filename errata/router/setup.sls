@@ -23,6 +23,7 @@ base_packages:
       - mtr
       - iptraf-ng
       - screen
+      - rsync
     - require:
       - pkg: epel-release
 
