@@ -8,5 +8,5 @@ hash_type: sha512
 tcp_keepalive: True
 enable_gpu_grains: False
 
-log_file: file:///dev/log
+log_file: /var/log/salt/minion
 log_level: info
