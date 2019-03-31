@@ -17,6 +17,7 @@ internal_router: False
 internal_router: True
 {% endif %}
 wan_ip: {{ wan_ip }}
+public_ip: {{ public_ip }}
 
 # Pi-hole Settings:
 dhcp_start: '192.168.1.50'
@@ -25,6 +26,9 @@ dhcp_router: '192.168.1.1'
 ipv6_address: ''
 pihole_dns_1: '8.8.8.8'
 pihole_dns_2: '8.8.4.4'
+
+# Wireguard Settings:
+wireguard_interface: 'wg0_server'
 
 # Additional Features
 vpn: True
