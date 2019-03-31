@@ -10,9 +10,9 @@ Allow Pihole to manage the WireGuard interface:
       - interface={{ pillar['wireguard_interface'] }}
     - template: jinja
 
-Create {{ pillar['wireguard_interface'] }}.conf in /etc/wireguard/:
+Create {{ pillar['wireguard_interface'] }}.conf in /etc/wireguard/server_configs:
   file.managed:
-    - name: /etc/wireguard/{{ pillar['wireguard_interface'] }}.conf
+    - name: /etc/wireguard/server_configs/{{ pillar['wireguard_interface'] }}.conf
     - contents: |
         [Interface]
         Address = 10.41.0.1/24
@@ -22,22 +22,22 @@ Create {{ pillar['wireguard_interface'] }}.conf in /etc/wireguard/:
 
 #Generate Private and Public Keys for {{ pillar['wireguard_interface'] }} in /etc/wireguard/keys/:
 #  file.managed:
-#    - name: /etc/wireguard/{{ pillar['wireguard_interface'] }}.conf
+#    - name: /etc/wireguard/server_configs/{{ pillar['wireguard_interface'] }}.conf
 #    - contents: __slot__:salt:cmd.shell('wg pubkey <<< {{ wireguard_client_private_key }}')
 #    - template: jinja
 
 {% for host in range(1,3) %}
   {% set wireguard_client_private_key = salt['cmd.run']('wg genkey') %}
 
-  Create wg{{ host }}_private.key in /etc/wireguard/client_configs/keys/:
+  Create wg{{ host }}_private.key in /etc/wireguard/client_keys/:
     file.managed:
-      - name: /etc/wireguard/client_configs/keys/wg{{ host }}_private.key
+      - name: /etc/wireguard/client_keys/wg{{ host }}_private.key
       - contents: {{ wireguard_client_private_key }}
       - template: jinja
 
-  Create wg{{ host }}_public.key in /etc/wireguard/client_configs/keys/:
+  Create wg{{ host }}_public.key in /etc/wireguard/client_keys/:
     file.managed:
-      - name: /etc/wireguard/client_configs/keys//wg{{ host }}_public.key
+      - name: /etc/wireguard/client_keys//wg{{ host }}_public.key
       - contents: __slot__:salt:cmd.shell('wg pubkey <<< {{ wireguard_client_private_key }}')
       - template: jinja
 
