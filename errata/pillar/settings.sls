@@ -27,11 +27,3 @@ ipv6_address: ''
 pihole_dns_1: '8.8.8.8'
 pihole_dns_2: '8.8.4.4'
 webpassword: 'password'
-
-# Wireguard Settings:
-wireguard_interface: 'wg0_server'
-
-# Additional Features
-vpn: False
-vlan: False
-rock_nsm: False
