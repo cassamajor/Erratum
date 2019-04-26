@@ -3,7 +3,7 @@
 
 
 # OS Settings
-login_account: 'router'
+username: 'router'
 hostname: 'router'
 domain: 'boxed'
 

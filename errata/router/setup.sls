@@ -1,13 +1,13 @@
-{{ pillar['login_account'] }}:
+{{ pillar['username'] }}:
   user.present: []
   ssh_auth.present:
-    - user: {{ pillar['login_account'] }}
+    - user: {{ pillar['username'] }}
     - source: salt://files/authorized_keys
     - config: '%h/.ssh/authorized_keys'
 
 /etc/sudoers:
   file.append:
-    - text: "{{ pillar['login_account'] }} ALL=(ALL) NOPASSWD: ALL"
+    - text: "{{ pillar['username'] }} ALL=(ALL) NOPASSWD: ALL"
 
 epel-release:
   pkg.installed: []
