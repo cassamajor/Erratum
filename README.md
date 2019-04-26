@@ -1,67 +1,47 @@
 # Credits
 Let's start with where credit is due. This project combines several open source projects
-to create a minimalistic router.
+to create a powerful router.
 
-Project Name | Project Website | Project Github | Project Function
+Project Name | Project Website | Project Git Repo | Project Function
 --- | --- | --- | ---
 Pi-hole | https://pi-hole.net | https://github.com/pi-hole/pi-hole | DNS + DHCP + Adblocker
 Firehol | http://firehol.org | https://github.com/firehol/firehol | Firewall
-Salt | https://saltstack.com/ | https://github.com/saltstack/salt | Configuration Management
+Salt | https://saltstack.com | https://github.com/saltstack/salt | Configuration Management
 
 # Configuration
+### [pillar/settings.sls](pillar/settings.sls)
+This is a one-stop shop for all necessary configuration settings.
+> *NOTE:* To see where configuration files live on the operating system, see [Filesystem Architecture](https://github.com/Fauxsys/Erratum/wiki/Filesystem-Architecture).
+
 ### [anaconda-ks.cfg](anaconda-ks.cfg)
-This is an example kickstart configuration file. The `root` and `linuxuser` accounts
-will be created with the password `password`. This can be changed in their appropriate fields.
-If you generate your own kickstart file, be sure to copy [lines 49-72](anaconda-ks.cfg#L49-L72) 
-to ensure the Erratum repository files are placed in their appropriate directories.
+This is an example kickstart configuration file. The `router` user account
+will be created with the password `this_is_only_an_example_password_please_change_me`. The password can be changed on [line 25](anaconda-ks.cfg#L25).
+If you generate your own kickstart file, copy [lines 49-67](anaconda-ks.cfg#L49-L67) 
+to ensure the Erratum repository files are placed in their appropriate directories. This will also install the Salt Master and Salt Minion which are required to deploy the codebase.
 
 
-### [errata/files/authorized_keys](errata/files/authorized_keys)
-Each public key should be separated by a newline.
-
-### [errata/files/firehol.conf](errata/files/firehol.conf)
-This is the Firehol configuration file. Change interface names and IP addresses to match your environment.
-
-* internal_servers: These are the protocols your router will serve to your LAN
-* internal_clients: These are the protocols your router will request from the WAN
-> **NOTE:** `ens33` is connected to the WAN and `ens34` is connected to the LAN
-
-### [errata/files/setupVars.conf](errata/files/setupVars.conf)
-This is the Pi-hole configuration file. Change DHCP, DNS, and interface name settings to match your environment.
-> **NOTE:** WEBPASSWORD is the SHA256 hash of "password".
-This can be changed after installation by running `pihole -a -p "insert new password here"`.
-
->Additionally, if any changes are manually made to setupVars.conf after installation, run `pihole -r`
-and select `Repair (This will retain existing settings)` for the changes to take effect.
-
-### [errata/router/setup.sls](errata/router/setup.sls)
-Change all instances of `linuxuser` to your desired username.
-
-Pay particular attention to the `modify_wan_dns` and `apply_wan_dns` states.
-These `nmcli` commands should target your WAN interface but the use case may not be relevant to your environment.
+### [states/files/authorized_keys](states/files/authorized_keys)
+Add SSH public keys to this file to grant SSH access into the server. Each key should be separated by a newline.
 
 # Installation
 ### [unattended.sh](unattended.sh)
-This will take an existing [`anaconda-ks.cfg`](anaconda-ks.cfg) located in the repository directory and transform it into a
-CentOS 7 ISO capable of unattended install. The newly generated ISO named `centos-7-custom.iso` will be placed
-in the same directory. This script is tested on Mac & Linux and requires sudo privileges.
+This will take an existing [`anaconda-ks.cfg`](anaconda-ks.cfg) and create a
+CentOS 7 ISO capable of unattended install. The newly generated ISO named will be placed
+in the repository directory. This script is tested on Mac & Linux and requires sudo privileges.
 
 Linux Dependencies | Mac Dependencies (installed via [homebrew](https://brew.sh/))
 --- | ---
 wget | wget
 rsync | rsync
 xorriso | xorriso
-sed  | gsed
+sed  | gnu-sed
 
 
 # Post-Install
-On the newly installed system, run `salt-call state.apply router` and the router will build itself based on the
-configurations above. Once completed, the following URLs will be available for Pi-hole and Netdata respectively:
+On the newly installed system, run `salt-call state.apply router` and the router will build itself based on the specified
+configurations. Upon successful completion, the following URLs will be available:
 
-* http://IP-ADDRESS/admin/
-* http://IP-ADDRESS:19999
-
-# Future Features 
-* [ ] VLAN Support
-* [ ] DNSCrypt Support
-* [ ] VPN Support
+URL | Description |
+--- | --- |
+| http://IP-ADDRESS/admin/ | Pi-hole dashboard |
+| http://IP-ADDRESS:19999 | Netdata dashboard |
