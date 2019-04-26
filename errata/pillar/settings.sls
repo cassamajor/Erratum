@@ -18,6 +18,8 @@ internal_router: True
 {% endif %}
 wan_ip: {{ wan_ip }}
 public_ip: {{ public_ip }}
+firehol_log_prefix: 'firehol: '
+firehol_log_location: '/var/log/firehol.log'
 
 # Pi-hole Settings:
 dhcp_start: '192.168.1.50'
