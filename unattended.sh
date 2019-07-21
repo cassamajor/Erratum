@@ -18,7 +18,7 @@ define_filenames() {
     ISOLINUX_CFG="$UNATTENDED_DIR/./isolinux/isolinux.cfg"
     GRUB_CFG="$UNATTENDED_DIR/./EFI/BOOT/grub.cfg"
     EFIBOOT_IMG="$UNATTENDED_DIR/./images/efiboot.img"
-    KS_CFG="$REPO_DIR/./anaconda-ks.cfg"
+    KS_CFG="$REPO_DIR/./ks.cfg"
 
     # Directory paths
     PILLAR="$REPO_DIR/pillar"
@@ -38,16 +38,16 @@ dl_image() {
 mac_kickstart_config() {
     # Add Custom Menu Item
     gsed -i '/menu default/d' "$ISOLINUX_CFG"
-    gsed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/anaconda-ks.cfg\3/' "$ISOLINUX_CFG"
-    gsed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/anaconda-ks.cfg\3/' "$GRUB_CFG"
+    gsed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/ks.cfg\3/' "$ISOLINUX_CFG"
+    gsed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/ks.cfg\3/' "$GRUB_CFG"
     gsed -i -E 's/set default=.*/set default="0"/' "$GRUB_CFG"
 }
 
 linux_kickstart_config() {
     # Add Custom Menu Item
     sed -i '/menu default/d' "$ISOLINUX_CFG"
-    sed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 ks=\2:\/anaconda-ks.cfg\3/' "$ISOLINUX_CFG"
-    sed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 ks=\2:\/anaconda-ks.cfg\3/' "$GRUB_CFG"
+    sed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/ks.cfg\3/' "$ISOLINUX_CFG"
+    sed -i -E 's/(.*)(hd:LABEL=\S+)(.*)/\1\2 inst.ks=\2:\/ks.cfg\3/' "$GRUB_CFG"
     sed -i -E 's/set default=.*/set default="0"/' "$GRUB_CFG"
 }
 

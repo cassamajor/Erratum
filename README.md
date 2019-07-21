@@ -13,10 +13,10 @@ Salt | https://saltstack.com | https://github.com/saltstack/salt | Configuration
 This is a one-stop shop for all necessary configuration settings.
 > *NOTE:* To see where configuration files live on the operating system, see [Filesystem Architecture](https://github.com/Fauxsys/Erratum/wiki/Filesystem-Architecture).
 
-### [anaconda-ks.cfg](anaconda-ks.cfg)
+### [ks.cfg](ks.cfg)
 This is an example kickstart configuration file. The `router` user account
-will be created with the password `this_is_only_an_example_password_please_change_me`. The password can be changed on [line 25](anaconda-ks.cfg#L25).
-If you generate your own kickstart file, copy [lines 49-67](anaconda-ks.cfg#L49-L67) 
+will be created with the password `this_is_only_an_example_password_please_change_me`. The password can be changed on [line 25](ks.cfg#L25).
+If you generate your own kickstart file, copy [lines 49-67](ks.cfg#L49-L67) 
 to ensure the Erratum repository files are placed in their appropriate directories. This will also install the Salt Master and Salt Minion which are required to deploy the codebase.
 
 
@@ -25,7 +25,7 @@ Add SSH public keys to this file to grant SSH access into the server. Each key s
 
 # Installation
 ### [unattended.sh](unattended.sh)
-This will take an existing [`anaconda-ks.cfg`](anaconda-ks.cfg) and create a
+This will take an existing [`ks.cfg`](ks.cfg) and create a
 CentOS 7 ISO capable of unattended install. The newly generated ISO named will be placed
 in the repository directory. This script is tested on Mac & Linux and requires sudo privileges.
 
