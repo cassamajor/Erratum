@@ -93,7 +93,7 @@ build_custom_iso() {
     rsync -azh --info=progress2 -R {"$ISOLINUX_CFG","$GRUB_CFG","$EFIBOOT_IMG","$KS_CFG"} "$BOOT_CFG"
 
     # Build Custom ISO Image
-    xorriso -indev "$OFFICIAL_ISO" -map "$BOOT_CFG" / -map "$PILLAR" /pillar -map "$SALT" /salt -map "$STATES" /states -boot_image any replay -outdev "$CUSTOM_ISO"
+    xorriso -indev "$OFFICIAL_ISO" -boot_image any replay -map "$BOOT_CFG" / -map "$PILLAR" /pillar -map "$SALT" /salt -map "$STATES" /states -outdev "$CUSTOM_ISO"
 }
 
 main() {
