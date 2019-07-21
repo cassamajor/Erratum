@@ -63,6 +63,7 @@ mac_mount_image() {
 
     mac_kickstart_config
     DEVICE=( $(hdiutil attach -nomount "$EFIBOOT_IMG") )
+    mount -t msdos "$DEVICE" "$MNT_DIR"
     rsync -azh --info=progress2 -R "$GRUB_CFG" "$MNT_DIR"
     umount "$MNT_DIR"
     hdiutil detach "$DEVICE"
@@ -70,14 +71,14 @@ mac_mount_image() {
 
 linux_mount_image() {
     # Mount Centos 7 Image
-    mount -o loop $OFFICIAL_ISO "$MNT_DIR"
+    mount -t iso9660 -o loop $OFFICIAL_ISO "$MNT_DIR"
 
     # Copy Contents of Image
     rsync -azh --info=progress2 "$MNT_DIR" "$UNATTENDED_DIR"
     umount "$MNT_DIR"
 
     linux_kickstart_config
-    mount -o loop "$EFIBOOT_IMG" "$MNT_DIR"
+    mount -t vfat -o loop "$EFIBOOT_IMG" "$MNT_DIR"
     rsync -azh --info=progress2 -R "$GRUB_CFG" "$MNT_DIR"
     umount "$MNT_DIR"
 }
