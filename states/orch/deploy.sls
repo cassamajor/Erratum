@@ -1,9 +1,3 @@
-rock:
-  salt.state:
-    - tgt: '*'
-    - sls:
-      - router.rock
-
 setup:
   salt.state:
     - tgt: '*'
