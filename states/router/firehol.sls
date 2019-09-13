@@ -33,11 +33,13 @@ install_firehol:
 /etc/rsyslog.d/log_firehol.conf:
   file.managed:
     - source: salt://files/log_firehol.conf
+    - template: jinja
     - backup: minion
 
 /etc/logrotate.d/logrotate_firehol.conf:
   file.managed:
     - source: salt://files/logrotate_firehol.conf
+    - template: jinja
     - backup: minion
 
 firehol start:
