@@ -32,7 +32,7 @@ define_filenames() {
 
 dl_image() {
     # Download CentOS ISO Image
-    wget -NP $KICKSTART_DIR "http://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal.iso"
+    wget -NP $KICKSTART_DIR "https://buildlogs.centos.org/rolling/7/isos/x86_64/CentOS-7-x86_64-Minimal.iso"
 }
 
 mac_kickstart_config() {
