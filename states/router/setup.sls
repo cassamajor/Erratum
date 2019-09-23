@@ -46,6 +46,20 @@ Define FQDN for router:
   cmd.run:
     - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{ pillar['domain'] }}
 
+{% if pillar['vpn'] %}
+Download WireGuard repository and install WireGuard Packages:
+  cmd.run:
+    - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
+  pkg.installed:
+    - pkgs:
+      - wireguard-dkms
+      - wireguard-tools
+
+Install qrencode to generate QR codes:
+  pkg.installed:
+    - name: qrencode
+{% endif %}
+
 # This setting will remove an ISP's DNS servers pushed through DHCP
 {% if pillar['internal_router'] == False %}
 modify_wan_dns:
