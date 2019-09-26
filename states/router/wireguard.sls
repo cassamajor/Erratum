@@ -1,6 +1,7 @@
 {% set wireguard_server_private_key = salt['cmd.run']('wg genkey') %}
 {% set listen_port = salt['cmd.run']('shuf -i 49152-65535 -n 1') %}
 
+# TODO: Do not override current configs on subsequent runs
 # TODO: Make host addresses configurable based on pillar: This will require jinja regex + familiarity with nested dicts (look at user creation examples)
 
 Download WireGuard repository and install WireGuard Packages:
@@ -37,8 +38,9 @@ Create {{ dir_name }} directory:
 Store Server Private Keys for {{ pillar['wireguard_interface'] }} in /etc/wireguard/server_keys/:
   file.managed:
     - name: /etc/wireguard/server_keys/{{ pillar['wireguard_interface'] }}_private.key
-    - contents:
-      - {{ wireguard_server_private_key }}
+    - contents: {{ wireguard_server_private_key }}
+    - template: jinja
+
 
 Store Server Public Keys for {{ pillar['wireguard_interface'] }} in /etc/wireguard/server_keys/:
   cmd.run:
