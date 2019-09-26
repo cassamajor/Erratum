@@ -2,8 +2,14 @@
 {% set listen_port = salt['cmd.run']('shuf -i 49152-65535 -n 1') %}
 
 # TODO: Make host addresses configurable based on pillar: This will require jinja regex + familiarity with nested dicts (look at user creation examples)
-# TODO: Require packages state from setup.sls
-# TODO: Fix Storing of Private Key
+
+Download WireGuard repository and install WireGuard Packages:
+  cmd.run:
+    - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
+  pkg.installed:
+    - pkgs:
+      - wireguard-dkms
+      - wireguard-tools
 
 Allow Pihole to manage the WireGuard interface:
   file.managed:
