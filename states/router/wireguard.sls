@@ -23,7 +23,7 @@ Allow Pihole to manage the WireGuard interface:
       - file: Allow Pihole to manage the WireGuard interface
 
 
-{% for dir_name in ['/etc/wireguard/', '/etc/wireguard/server_configs', '/etc/wireguard/server_keys', '/etc/wireguard/client_configs', '/etc/wireguard/client_keys'] %}
+{% for dir_name in ['/etc/wireguard', '/etc/wireguard/server_configs', '/etc/wireguard/server_keys', '/etc/wireguard/client_configs', '/etc/wireguard/client_keys'] %}
 Create {{ dir_name }} directory:
   file.directory:
     - name: {{ dir_name }}
