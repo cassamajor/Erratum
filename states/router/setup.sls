@@ -46,11 +46,6 @@ Define FQDN for router:
   cmd.run:
     - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{ pillar['domain'] }}
 
-Install qrencode to generate QR codes:
-  pkg.installed:
-    - name: qrencode
-{% endif %}
-
 # This setting will remove an ISP's DNS servers pushed through DHCP
 {% if pillar['internal_router'] == False %}
 modify_wan_dns:

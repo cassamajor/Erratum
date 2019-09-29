@@ -12,6 +12,10 @@ Download WireGuard repository and install WireGuard Packages:
       - wireguard-dkms
       - wireguard-tools
 
+Install qrencode to generate QR codes:
+  pkg.installed:
+    - name: qrencode
+
 Allow Pihole to manage the WireGuard interface:
   file.managed:
     - name: /etc/dnsmasq.d/{{ pillar['wireguard_interface'] }}.conf
