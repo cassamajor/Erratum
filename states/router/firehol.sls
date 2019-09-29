@@ -1,66 +1,63 @@
-firehol_dependencies:
-  pkg.installed:
-    - pkgs:
-      - zlib-devel
-      - libuuid-devel
-      - libmnl-devel
-      - gcc
-      - make
-      - git
-      - autoconf
-      - autogen
-      - automake
-      - pkgconfig
-      - traceroute
-      - ipset
-      - curl
-      - nodejs
-      - zip
-      - unzip
-      - jq
-
-install_firehol:
+Download IPrange and Firehol packages:
   cmd.script:
-    - source: https://raw.githubusercontent.com/firehol/netdata-demo-site/master/install-all-firehol.sh
+    - source: salt://files/firehol+iprange.sh
     - runas: root
 
+Install IPrange and Firehol:
+  pkg.installed:
+    - sources:
+        - iprange: salt://files/iprange.rpm
+        - firehol: salt://files/firehol.rpm
+
+Configure and enable Firehol:
   file.managed:
     - name: /etc/firehol/firehol.conf
     - source: salt://files/firehol.conf
     - template: jinja
     - backup: minion
+  service.running:
+    - name: firehol
+    - enabled: True
+    - watch:
+      - pkg: Install IPrange and Firehol
 
-/etc/rsyslog.d/log_firehol.conf:
+Allow rsyslog to manage Firehol logs:
   file.managed:
+    - name: /etc/rsyslog.d/log_firehol.conf
     - source: salt://files/log_firehol.conf
     - template: jinja
     - backup: minion
 
-/etc/logrotate.d/logrotate_firehol.conf:
+Logrotate Firehol logs:
   file.managed:
+    - name: /etc/logrotate.d/logrotate_firehol.conf
     - source: salt://files/logrotate_firehol.conf
     - template: jinja
     - backup: minion
 
-firehol start:
-  cmd.run: []
+Install Netdata:
+  cmd.script:
+    - source: https://my-netdata.io/kickstart.sh
+    - args: "--dont-wait --stable-channel"
+    - runas: root
 
-echo 1 >/sys/kernel/mm/ksm/run:
-  cmd.run: []
+Optimize Netdata Memory Usage:
+  file.manage:
+    - name: /etc/systemd/system/ksm.service
+    - contents: |
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=echo 1 >/sys/kernel/mm/ksm/run
+        ExecStart=echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs
 
-echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs:
-  cmd.run: []
+        [Unit]
+        WantedBy=netdata.service
 
-"sleep 60 && /usr/sbin/firehol start":
-  cron.present:
-    - identifier: "FIREHOL"
-    - comment: "Upon reboot, wait 60 seconds then enable Firehol."
-    - user: root
-    - special: '@reboot'
-
-/usr/src/netdata.git/netdata-updater.sh:
-  cron.present:
-      - identifier: "NETDATA"
-      - comment: "Auto-update Netdata daily."
-      - user: root
-      - special: '@daily'
+        [Install]
+        WantedBy=multi-user.target
+  service.running:
+    - name: ksm
+    - enable: True
+    - watch:
+        file: Optimize Netdata Memory Usage
