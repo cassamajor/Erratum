@@ -3,13 +3,15 @@ Download IPrange and Firehol packages:
     - source: salt://files/firehol+iprange.sh
     - runas: root
 
-Install IPrange and Firehol:
+Install iprange:
   pkg.installed:
     - sources:
-        - iprange: salt://files/iprange.rpm
-        - firehol: salt://files/firehol.rpm
+        - iprange: salt://files/iprange-latest.rpm
 
-Configure and enable Firehol:
+Install, configure, and enable Firehol:
+  pkg.installed:
+    - sources:
+      - firehol: salt://files/firehol-latest.rpm
   file.managed:
     - name: /etc/firehol/firehol.conf
     - source: salt://files/firehol.conf
@@ -42,17 +44,20 @@ Install Netdata:
     - runas: root
 
 Optimize Netdata Memory Usage:
-  file.manage:
+  file.managed:
     - name: /etc/systemd/system/ksm.service
+    - mode: 664
     - contents: |
+        [Unit]
+        Description=Optimize Netdata Memory Usage
+        Documentation=https://docs.netdata.cloud/database/#ksm
+        Wants=netdata.service
+
         [Service]
         Type=oneshot
         RemainAfterExit=yes
-        ExecStart=echo 1 >/sys/kernel/mm/ksm/run
-        ExecStart=echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs
-
-        [Unit]
-        WantedBy=netdata.service
+        ExecStart=/usr/bin/bash -c "echo 1 >/sys/kernel/mm/ksm/run"
+        ExecStart=/usr/bin/bash -c "echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs"
 
         [Install]
         WantedBy=multi-user.target
@@ -60,4 +65,4 @@ Optimize Netdata Memory Usage:
     - name: ksm
     - enable: True
     - watch:
-        file: Optimize Netdata Memory Usage
+      - file: Optimize Netdata Memory Usage
