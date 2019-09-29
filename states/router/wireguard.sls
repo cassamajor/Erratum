@@ -1,8 +1,9 @@
 {% set wireguard_server_private_key = salt['cmd.run']('wg genkey') %}
-{% set listen_port = salt['cmd.run']('shuf -i 49152-65535 -n 1') %}
 
 # TODO: Do not override current configs on subsequent runs
 # TODO: Make host addresses configurable based on pillar: This will require jinja regex + familiarity with nested dicts (look at user creation examples)
+# TODO: Require firehol state file or set onchanges to allow Wireguard through firewall
+# TODO: Wireguard needs to be installed before execution of this state.. this needs to be fixed.
 
 Download WireGuard repository and install WireGuard Packages:
   cmd.run:
@@ -60,7 +61,7 @@ Create {{ pillar['wireguard_interface'] }}.conf in /etc/wireguard/server_configs
         [Interface]
         Address = {{ pillar['internal_network'] }}
         PrivateKey = {{ wireguard_server_private_key }}
-        ListenPort = {{ listen_port }}
+        ListenPort = {{ pillar['listen_port'] }}
     - template: jinja
     - backup: True
 
@@ -92,7 +93,7 @@ Create wg{{ host }}_client.conf and qr_wg{{ host }}_client.conf in /etc/wireguar
 
         [Peer]
         PublicKey = wireguard_server_public_key
-        Endpoint = {{ pillar['public_ip'] }}:{{ listen_port }}
+        Endpoint = {{ pillar['public_ip'] }}:{{ pillar['listen_port'] }}
         AllowedIPs = 0.0.0.0/0
     - template: jinja
     - backup: True
