@@ -24,6 +24,7 @@ base_packages:
       - iptraf-ng
       - screen
       - rsync
+      - ncdu
     - require:
       - pkg: epel-release
 
