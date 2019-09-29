@@ -27,10 +27,9 @@ Install Pi-hole:
     - runas: root
     - args: "--unattended"
 
-Github Issue 2391:
-  cmd.run:
-    - name: touch /etc/lighttpd/external.conf
-    - onchanges_in:
-        - service: lighttpd
-  service.running:
-    - name: lighttpd
+Logrotate lighttpd logs:
+  file.managed:
+    - name: /etc/logrotate.d/logrotate_lighttpd.conf
+    - source: salt://files/logrotate_lighttpd.conf
+    - template: jinja
+    - backup: minion
