@@ -21,7 +21,7 @@ Install, configure, and enable Firehol:
     - name: firehol
     - enabled: True
     - watch:
-      - pkg: Install IPrange and Firehol
+      - pkg: Install, configure, and enable Firehol
 
 Allow rsyslog to manage Firehol logs:
   file.managed:
@@ -45,24 +45,8 @@ Install Netdata:
 
 Optimize Netdata Memory Usage:
   file.managed:
-    - name: /etc/systemd/system/ksm.service
-    - mode: 664
+    - name: /etc/tmpfiles.d/enable-ksm.conf
     - contents: |
-        [Unit]
-        Description=Optimize Netdata Memory Usage
-        Documentation=https://docs.netdata.cloud/database/#ksm
-        Wants=netdata.service
-
-        [Service]
-        Type=oneshot
-        RemainAfterExit=yes
-        ExecStart=/usr/bin/bash -c "echo 1 >/sys/kernel/mm/ksm/run"
-        ExecStart=/usr/bin/bash -c "echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs"
-
-        [Install]
-        WantedBy=multi-user.target
-  service.running:
-    - name: ksm
-    - enable: True
-    - watch:
-      - file: Optimize Netdata Memory Usage
+        #    Path                                 Mode UID  GID  Age Argument
+        w    /sys/kernel/mm/ksm/run               -    -    -    -   1
+        w    /sys/kernel/mm/ksm/sleep_millisecs   -    -    -    -   1000
