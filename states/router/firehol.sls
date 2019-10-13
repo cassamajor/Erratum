@@ -3,13 +3,15 @@ Download IPrange and Firehol packages:
     - source: salt://files/firehol+iprange.sh
     - runas: root
 
-Install IPrange and Firehol:
+Install iprange:
   pkg.installed:
     - sources:
-        - iprange: salt://files/iprange.rpm
-        - firehol: salt://files/firehol.rpm
+        - iprange: salt://files/iprange-latest.rpm
 
-Configure and enable Firehol:
+Install, configure, and enable Firehol:
+  pkg.installed:
+    - sources:
+      - firehol: salt://files/firehol-latest.rpm
   file.managed:
     - name: /etc/firehol/firehol.conf
     {% if pillar['vpn'] %}
@@ -23,7 +25,7 @@ Configure and enable Firehol:
     - name: firehol
     - enabled: True
     - watch:
-      - pkg: Install IPrange and Firehol
+      - pkg: Install, configure, and enable Firehol
 
 Allow rsyslog to manage Firehol logs:
   file.managed:
@@ -46,22 +48,9 @@ Install Netdata:
     - runas: root
 
 Optimize Netdata Memory Usage:
-  file.manage:
-    - name: /etc/systemd/system/ksm.service
+  file.managed:
+    - name: /etc/tmpfiles.d/enable-ksm.conf
     - contents: |
-        [Service]
-        Type=oneshot
-        RemainAfterExit=yes
-        ExecStart=echo 1 >/sys/kernel/mm/ksm/run
-        ExecStart=echo 1000 >/sys/kernel/mm/ksm/sleep_millisecs
-
-        [Unit]
-        WantedBy=netdata.service
-
-        [Install]
-        WantedBy=multi-user.target
-  service.running:
-    - name: ksm
-    - enable: True
-    - watch:
-        file: Optimize Netdata Memory Usage
+        #    Path                                 Mode UID  GID  Age Argument
+        w    /sys/kernel/mm/ksm/run               -    -    -    -   1
+        w    /sys/kernel/mm/ksm/sleep_millisecs   -    -    -    -   1000
