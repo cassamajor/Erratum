@@ -1,5 +1,6 @@
 {% set public_ip = salt['cmd.run']('curl -sL api.ipify.org') %}
 {% set wan_ip = salt['cmd.shell']("ip route get 8.8.8.8 | awk '{print $7}'") %}
+{% set listen_port = salt['cmd.run']('shuf -i 49152-65535 -n 1') %}
 
 
 # OS Settings
@@ -29,3 +30,11 @@ ipv6_address: ''
 pihole_dns_1: '8.8.8.8'
 pihole_dns_2: '8.8.4.4'
 webpassword: 'this-password-should-not-stay-the-same'
+
+# Wireguard Settings:
+wireguard_interface: 'wg0'
+vpn_network: '192.168.2.0/24'
+listen_port: {{ listen_port }}
+
+# Additional Features
+vpn: True

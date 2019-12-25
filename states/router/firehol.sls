@@ -14,7 +14,11 @@ Install, configure, and enable Firehol:
       - firehol: salt://files/firehol-latest.rpm
   file.managed:
     - name: /etc/firehol/firehol.conf
+    {% if pillar['vpn'] %}
+    - source: salt://files/firehol-vpn.conf
+    {% else %}
     - source: salt://files/firehol.conf
+    {% endif %}
     - template: jinja
     - backup: minion
   service.running:

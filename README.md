@@ -7,6 +7,7 @@ Project Name | Project Website | Project Git Repo | Project Function
 Pi-hole | https://pi-hole.net | https://github.com/pi-hole/pi-hole | DNS + DHCP + Adblocker
 Firehol | http://firehol.org | https://github.com/firehol/firehol | Firewall
 Salt | https://saltstack.com | https://github.com/saltstack/salt | Configuration Management
+WireGuard | https://wireguard.io | https://git.zx2c4.com/WireGuard | VPN
 
 # Configuration
 ### [pillar/settings.sls](pillar/settings.sls)
@@ -38,7 +39,7 @@ sed  | gnu-sed
 
 
 # Post-Install
-On the newly installed system, run `salt-call state.apply router` and the router will build itself based on the specified
+On the newly installed system, run `salt-run state.orch orch.deploy` and the router will build itself based on the specified
 configurations. Upon successful completion, the following URLs will be available:
 
 URL | Description |
