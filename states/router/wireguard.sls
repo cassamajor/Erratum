@@ -7,7 +7,7 @@
 
 Download WireGuard repository and install WireGuard Packages:
   cmd.run:
-    - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo
+    - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-8/jdoss-wireguard-epel-8.repo
   pkg.installed:
     - pkgs:
       - wireguard-dkms
