@@ -39,7 +39,7 @@ sed  | gnu-sed
 
 
 # Post-Install
-On the newly installed system, run `salt-call state.apply router` and the router will build itself based on the specified
+On the newly installed system, run `salt-run state.orch orch.deploy` and the router will build itself based on the specified
 configurations. Upon successful completion, the following URLs will be available:
 
 URL | Description |
