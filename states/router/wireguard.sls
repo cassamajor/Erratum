@@ -1,10 +1,5 @@
 {% set wireguard_server_private_key = salt['cmd.run']('wg genkey') %}
 
-# TODO: Do not override current configs on subsequent runs
-# TODO: Make host addresses configurable based on pillar: This will require jinja regex + familiarity with nested dicts (look at user creation examples)
-# TODO: Require firehol state file or set onchanges to allow Wireguard through firewall
-# TODO: Wireguard needs to be installed before execution of this state.. this needs to be fixed.
-
 Download WireGuard repository and install WireGuard Packages:
   cmd.run:
     - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-8/jdoss-wireguard-epel-8.repo
