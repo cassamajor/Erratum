@@ -47,7 +47,7 @@ Define FQDN for router:
   cmd.run:
     - name: hostnamectl set-hostname {{ pillar['hostname'] }}.{{ pillar['domain'] }}
 
-{% if pillar['vpn'] == True %}
+{% if pillar['enable_vpn'] %}
 Download WireGuard repository and install WireGuard Packages:
   cmd.run:
     - name: curl -Lo /etc/yum.repos.d/wireguard.repo https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-8/jdoss-wireguard-epel-8.repo

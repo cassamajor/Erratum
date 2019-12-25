@@ -32,9 +32,7 @@ pihole_dns_2: '8.8.4.4'
 webpassword: 'this-password-should-not-stay-the-same'
 
 # Wireguard Settings:
+enable_vpn: True
 wireguard_interface: 'wg0'
 vpn_network: '192.168.2.0/24'
 listen_port: {{ listen_port }}
-
-# Additional Features
-vpn: True

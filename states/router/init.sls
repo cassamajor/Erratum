@@ -3,6 +3,6 @@ include:
   - router.hardening
   - router.firehol
   - router.pihole
-  {% if pillar['vpn'] %}
+  {% if pillar['enable_vpn'] %}
   - router.wireguard
   {% endif %}
